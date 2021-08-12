@@ -14,7 +14,8 @@ EXPOSE 80 443
 
 ENTRYPOINT ["entrypoint.sh"]
 
-CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
-
 # Раздаем права на папки для apache
 RUN chown -R www-data:www-data /app/server/web
+
+CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
+
