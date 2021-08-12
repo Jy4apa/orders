@@ -1,0 +1,40 @@
+version: '3'
+
+volumes:
+  db_data_local: {}
+
+services:
+  php:
+    build:
+      dockerfile: provision/Dockerfile
+      context: .
+    container_name: app__web
+    depends_on:
+      - db
+    env_file:
+      - .env
+    restart: unless-stopped
+    volumes:
+      - .:/app
+    ports:
+      - '80:80'
+      - '443:443'
+    networks:
+      - private_network
+
+  db:
+    image: postgres
+    container_name: app__database
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - db_data_local:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    networks:
+      - private_network
+
+networks:
+  private_network:
+    driver: bridge
